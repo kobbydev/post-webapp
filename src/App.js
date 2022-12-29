@@ -126,7 +126,14 @@ function App() {
 
 	// function to view all
 	function viewAll() {
-		setViewAllBool(true);
+		setViewAllBool(!viewAllBool);
+		// posts.reverse();
+		setPosts([...posts]);
+	}
+
+	// function to sort by time
+	function sortedPosts() {
+		return posts.sort((a, b) => a.time < b.time);
 	}
 
 	// function to handle text in the input box
@@ -189,13 +196,12 @@ function App() {
 			<section>
 				<div className='posts'>
 					{viewAllBool
-						? posts.reverse().map(renderPosts)
-						: posts
-								.slice(posts.length - 2, posts.length)
-								.reverse()
+						? sortedPosts().map(renderPosts)
+						: sortedPosts().slice(0, 2)
 								.map(renderPosts)}
 				</div>
-				{posts.length > 2 && <button onClick={viewAll}>View All</button>}
+				{posts.length > 2 && !viewAllBool && <button onClick={viewAll}>View All</button>}
+				{posts.length > 2 && viewAllBool && <button onClick={viewAll}>View Less</button>}
 			</section>
 			{viewModal && (
 				<div className='modal'>
